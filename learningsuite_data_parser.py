@@ -8,7 +8,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument(
     "-d", "--directory", help="collects the module data for all files in directory"
 )
-parser.add_argument("-f", "--file", help="collects the module data for the file ")
+parser.add_argument("-f", "--file", help="collects the module data for as single file ")
 parser.add_argument(
     "-v", "--verbose", action="store_true", help="print logging messages"
 )
