@@ -7,7 +7,7 @@ import numpy as np
 parser = argparse.ArgumentParser()
 parser.add_argument("-d", "--directory", help="collects the module data for all files in directory")
 parser.add_argument("-f", "--file", help="collects the module data for a single file")
-parser.add_argument("-p", "--people", help="collects the data for each participant")
+parser.add_argument("-p", "--participants", help="collects the data for each participant")
 parser.add_argument("-v", "--verbose", action="store_true", help="print logging messages")
 args = parser.parse_args()
 
@@ -74,5 +74,5 @@ elif args.directory:
         fix_file(file_name)
         data = pd.read_csv(temptxt_path)
         get_module_info(file_name, data)
-elif args.people:
+elif args.participants:
     pass
