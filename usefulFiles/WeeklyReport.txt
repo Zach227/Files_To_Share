@@ -1,0 +1,11 @@
+Week 05/2-05/08
+ - Tasks completed:
+   - Worked on Codebreaker lab, Identified dual port RAM is issue
+   - Assigned issues to each of us
+   - Watched surelog/uhdm video
+   - tried f4pga commandline
+   - Learned more about Surelog and how to run parser by itself
+   - Worked on braoder impacts module
+   - Worked on python scripts for parsing csv files from learning suite
+ - Issues/Problems:
+ - Goals for next week:

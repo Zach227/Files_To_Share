@@ -1,0 +1,5 @@
+ - Relearn cmake
+ - Learn abour nix
+ - Learn abour surelog library
+ - Run the parser not in with yosys
+ - Change the grammer ?  
