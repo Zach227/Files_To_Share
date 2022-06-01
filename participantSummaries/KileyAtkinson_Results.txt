@@ -1,0 +1,6 @@
+Kiley Atkinson completed 3 modules:
+    Git
+    GitHub
+    Linux
+
+Total hours spent: 6.0

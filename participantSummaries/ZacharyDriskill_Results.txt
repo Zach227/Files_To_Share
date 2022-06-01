@@ -1,0 +1,17 @@
+Zachary Driskill completed 14 modules:
+    Git
+    Python_Packages_Environments
+    Numpy_Pandas_Matplotlib
+    GitHub
+    GitHubCI_UnitTesting
+    Cmake
+    VSCode
+    PythonI
+    WebTechnologies
+    Sphinx
+    OSS
+    Make
+    Linux
+    PythonII
+
+Total hours spent: 39.0

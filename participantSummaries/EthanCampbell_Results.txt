@@ -1,0 +1,14 @@
+Ethan Campbell completed 11 modules:
+    Git
+    Python_Packages_Environments
+    Numpy_Pandas_Matplotlib
+    GitHub
+    Cmake
+    VSCode
+    PythonI
+    OSS
+    Make
+    Linux
+    PythonII
+
+Total hours spent: 45.0

@@ -1,0 +1,6 @@
+Jake McCoy completed 3 modules:
+    Git
+    WebTechnologies
+    Linux
+
+Total hours spent: 6.5

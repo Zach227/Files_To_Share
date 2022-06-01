@@ -1,0 +1,17 @@
+Weston Smith completed 14 modules:
+    Git
+    Python_Packages_Environments
+    Numpy_Pandas_Matplotlib
+    GitHub
+    Cmake
+    VSCode
+    PythonI
+    WebTechnologies
+    Sphinx
+    OSS
+    Make
+    Linux
+    Docker
+    PythonII
+
+Total hours spent: 26.5

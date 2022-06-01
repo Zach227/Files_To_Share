@@ -1,0 +1,19 @@
+Garrett Smith completed 16 modules:
+    Git
+    Python_Packages_Environments
+    Numpy_Pandas_Matplotlib
+    GitHub
+    GitHubCI_UnitTesting
+    Cmake
+    VSCode
+    PythonI
+    WebTechnologies
+    Sphinx
+    OSS
+    Security
+    Make
+    Linux
+    Docker
+    PythonII
+
+Total hours spent: 31.0

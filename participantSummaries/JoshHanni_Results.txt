@@ -1,0 +1,14 @@
+Josh Hanni completed 11 modules:
+    Git
+    Python_Packages_Environments
+    Numpy_Pandas_Matplotlib
+    GitHub
+    GitHubCI_UnitTesting
+    Cmake
+    VSCode
+    Sphinx
+    Security
+    Make
+    Linux
+
+Total hours spent: 37.0

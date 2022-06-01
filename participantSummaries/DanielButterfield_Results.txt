@@ -1,0 +1,7 @@
+Daniel Butterfield completed 4 modules:
+    Git
+    GitHub
+    Make
+    Linux
+
+Total hours spent: 5.41

@@ -1,0 +1,17 @@
+Pablo Lopez Medina completed 14 modules:
+    Git
+    Python_Packages_Environments
+    Numpy_Pandas_Matplotlib
+    GitHub
+    GitHubCI_UnitTesting
+    Cmake
+    VSCode
+    PythonI
+    Sphinx
+    OSS
+    Security
+    Make
+    Linux
+    PythonII
+
+Total hours spent: 42.0

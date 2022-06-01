@@ -1,0 +1,7 @@
+Ethan Monlux completed 4 modules:
+    Python_Packages_Environments
+    Numpy_Pandas_Matplotlib
+    GitHubCI_UnitTesting
+    WebTechnologies
+
+Total hours spent: 6.5

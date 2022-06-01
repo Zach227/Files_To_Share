@@ -1,0 +1,15 @@
+Samuel Reynolds completed 12 modules:
+    Git
+    Python_Packages_Environments
+    Numpy_Pandas_Matplotlib
+    GitHub
+    GitHubCI_UnitTesting
+    Cmake
+    PythonI
+    WebTechnologies
+    Sphinx
+    OSS
+    Security
+    Docker
+
+Total hours spent: 15.75

@@ -1,0 +1,15 @@
+Tyler Ricks completed 12 modules:
+    Git
+    Python_Packages_Environments
+    Numpy_Pandas_Matplotlib
+    GitHub
+    GitHubCI_UnitTesting
+    Cmake
+    VSCode
+    PythonI
+    Sphinx
+    OSS
+    Make
+    PythonII
+
+Total hours spent: 24.0

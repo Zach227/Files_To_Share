@@ -1,0 +1,7 @@
+Zachary Olivier completed 4 modules:
+    Git
+    PythonI
+    Make
+    Linux
+
+Total hours spent: 8.0

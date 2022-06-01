@@ -1,0 +1,15 @@
+Julia Hansen completed 12 modules:
+    Git
+    Python_Packages_Environments
+    GitHub
+    GitHubCI_UnitTesting
+    Cmake
+    VSCode
+    WebTechnologies
+    OSS
+    Security
+    Make
+    Linux
+    PythonII
+
+Total hours spent: 42.0

@@ -1,0 +1,14 @@
+Jared Robinson completed 11 modules:
+    Git
+    GitHub
+    Cmake
+    VSCode
+    PythonI
+    OSS
+    Security
+    Make
+    Linux
+    Docker
+    PythonII
+
+Total hours spent: 28.0
