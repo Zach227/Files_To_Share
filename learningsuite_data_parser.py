@@ -117,6 +117,7 @@ def create_student_summaries():
                 out.write(f"\nTotal hours spent: {total_time}\n")
 
 
+# remove students who have completed 0 modules
 def remove_nonparticipants(modules, hours):
     new_modules = {}
     new_hours = {}
@@ -133,15 +134,10 @@ def remove_nonparticipants(modules, hours):
                 if not pd.isnull(value):
                     total_time = total_time + value
             new_hours[student] = total_time
-
-    # for student in zero_modules_completed:
-    #     # new_modules = {key:val for key, val in new_modules if key != student}
-    #     # new_hours = {key:val for key, val in new_hours if key != student}
-    #     del new_modules[student]
-    #     del new_modules[student]
     return new_modules, new_hours
 
 
+# create file and histograms that give overall sumamry of data
 def create_full_summary():
     os.chdir(bootcampSummary_dir_path)
     time_data = []
@@ -162,7 +158,6 @@ def create_full_summary():
     plt.subplots_adjust(
         left=None, bottom=None, right=None, top=None, wspace=None, hspace=0.3
     )
-    # plt.show()
     plt.savefig("histograms.png")
     max_time = max(time_data)
     min_time = min(time_data)
@@ -189,7 +184,6 @@ def create_full_summary():
             f"Min Time Spent: {min_time} ({student_modules[min_student]} modules)\n"
         )
         out.write(f"Average Time Per Module: {total_hours/total_modules}")
-
         # out.write(f"Full Time Data: {', '.join(string_time_data)}\n")
         # out.write(f"Full Modules Data: {', '.join(string_num_modules_data)}\n")
 
