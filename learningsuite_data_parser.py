@@ -30,6 +30,7 @@ home_path = os.path.expanduser("~/")
 ran_in_path = os.getcwd()
 moduleSummaries_dir_path = os.path.join(ran_in_path, "moduleSummaries")
 participantSummaries_dir_path = os.path.join(ran_in_path, "participantSummaries")
+bootcampSummary_dir_path = os.path.join(ran_in_path, "bootcampSummary")
 temptxt_path = os.path.join(moduleSummaries_dir_path, "temp.txt")
 
 # correct the csv file from learning suite and put it in temp.txt
@@ -115,11 +116,8 @@ def create_student_summaries():
                     out.write(f"    {mod}\n")
                 out.write(f"\nTotal hours spent: {total_time}\n")
 
+
 def remove_nonparticipants(modules, hours):
-    print(modules)
-    print('\n\n')
-    print(hours)
-    print('\n\n')
     new_modules = {}
     new_hours = {}
     for student in modules:
@@ -136,24 +134,16 @@ def remove_nonparticipants(modules, hours):
                     total_time = total_time + value
             new_hours[student] = total_time
 
-
     # for student in zero_modules_completed:
     #     # new_modules = {key:val for key, val in new_modules if key != student}
     #     # new_hours = {key:val for key, val in new_hours if key != student}
     #     del new_modules[student]
     #     del new_modules[student]
-    print(zero_modules_completed)
-    print('\n\n')
-    print(new_modules)
-    print('\n\n')
-    print(new_hours)
-
     return new_modules, new_hours
-    
 
 
 def create_full_summary():
-    os.chdir(ran_in_path)
+    os.chdir(bootcampSummary_dir_path)
     time_data = []
     num_modules_data = []
     for student in student_hours:
@@ -162,31 +152,46 @@ def create_full_summary():
         num_modules_data.append(student_modules[student])
     time_data = np.sort(time_data)
     string_time_data = [str(x) for x in time_data]
-    # time_data_2 = [x for x in time_data if x >= 15]
     num_modules_data = np.sort(num_modules_data)
     string_num_modules_data = [str(x) for x in num_modules_data]
-    # num_modules_data_2 = [x for x in num_modules_data if x >= 10]
     fig, axs = plt.subplots(2)
-    axs[0].hist(time_data, bins=7)
+    axs[0].hist(time_data, bins=10)
     axs[0].set_title("Time")
     axs[1].hist(num_modules_data, bins=16)
     axs[1].set_title("Modules")
-    # plt.subplots_adjust(
-    #     left=None, bottom=None, right=None, top=None, wspace=None, hspace=0.3
-    # )
+    plt.subplots_adjust(
+        left=None, bottom=None, right=None, top=None, wspace=None, hspace=0.3
+    )
     # plt.show()
     plt.savefig("histograms.png")
+    max_time = max(time_data)
+    min_time = min(time_data)
+    for student in student_hours:
+        if student_hours[student] == max_time:
+            max_student = student
+        if student_hours[student] == min_time:
+            min_student = student
     with open("Bootcamp_Summary.txt", "w") as out:
         num_students = len(student_modules)
         num_inactive = len(zero_modules_completed)
         total_hours = sum(time_data)
+        total_modules = sum(num_modules_data)
         out.write(f"Total Participants: {num_students + num_inactive}\n")
-        out.write(f"Participants with 0 modules completed: {num_inactive}\n")
+        out.write(f"Participants with 0 modules completed: {num_inactive}\n\n")
         out.write(f"Actual Participants: {num_students}\n")
         out.write(f"Total Hours Spent: {total_hours}\n")
-        out.write(f"Time Per Student: {total_hours/num_students}\n\n")
-        out.write(f"Full Time Data: {', '.join(string_time_data)}\n")
-        out.write(f"Full Modules Data: {', '.join(string_num_modules_data)}\n")
+        out.write(f"Mean Time Spent: {np.mean(time_data)}\n")
+        out.write(f"Median Time Spent: {np.median(time_data)}\n")
+        out.write(
+            f"Max Time Spent: {max_time} ({student_modules[max_student]} modules)\n"
+        )
+        out.write(
+            f"Min Time Spent: {min_time} ({student_modules[min_student]} modules)\n"
+        )
+        out.write(f"Average Time Per Module: {total_hours/total_modules}")
+
+        # out.write(f"Full Time Data: {', '.join(string_time_data)}\n")
+        # out.write(f"Full Modules Data: {', '.join(string_num_modules_data)}\n")
 
 
 # main()
@@ -220,6 +225,8 @@ elif args.participantsdirectory:
     os.remove(temptxt_path)
     create_student_summaries()
 elif args.summary:
+    if not os.path.isdir(bootcampSummary_dir_path):
+        os.mkdir(bootcampSummary_dir_path)
     data_dir_path = os.path.join(ran_in_path, args.summary)
     student_modules = {}
     student_hours = {}
@@ -230,7 +237,9 @@ elif args.summary:
         get_student_info(file_name, data)
     os.remove(temptxt_path)
     zero_modules_completed = []
-    student_modules,student_hours = remove_nonparticipants(student_modules, student_hours)
+    student_modules, student_hours = remove_nonparticipants(
+        student_modules, student_hours
+    )
     create_full_summary()
 else:
     print("No options were selected, use -h option for help")
