@@ -2,6 +2,7 @@ import argparse
 import pandas as pd
 import os
 import numpy as np
+import matplotlib.pyplot as plt
 
 # parse arguments
 parser = argparse.ArgumentParser()
@@ -15,6 +16,9 @@ parser.add_argument(
     "-pd",
     "--participantsdirectory",
     help="collects the data for each participant from a directory",
+)
+parser.add_argument(
+    "-s", "--summary", help="creates a summary for bootcamp participation"
 )
 parser.add_argument(
     "-v", "--verbose", action="store_true", help="print logging messages"
@@ -109,7 +113,80 @@ def create_student_summaries():
                 )
                 for mod in student_modules[student]:
                     out.write(f"    {mod}\n")
-                out.write(f"\nTotal hours spent: {total_time}")
+                out.write(f"\nTotal hours spent: {total_time}\n")
+
+def remove_nonparticipants(modules, hours):
+    print(modules)
+    print('\n\n')
+    print(hours)
+    print('\n\n')
+    new_modules = {}
+    new_hours = {}
+    for student in modules:
+        if len(modules[student]) < 1:
+            zero_modules_completed.append(student)
+    for student in modules:
+        if student not in zero_modules_completed:
+            new_modules[student] = len(modules[student])
+    for student in student_hours:
+        if student not in zero_modules_completed:
+            total_time = 0
+            for value in student_hours[student]:
+                if not pd.isnull(value):
+                    total_time = total_time + value
+            new_hours[student] = total_time
+
+
+    # for student in zero_modules_completed:
+    #     # new_modules = {key:val for key, val in new_modules if key != student}
+    #     # new_hours = {key:val for key, val in new_hours if key != student}
+    #     del new_modules[student]
+    #     del new_modules[student]
+    print(zero_modules_completed)
+    print('\n\n')
+    print(new_modules)
+    print('\n\n')
+    print(new_hours)
+
+    return new_modules, new_hours
+    
+
+
+def create_full_summary():
+    os.chdir(ran_in_path)
+    time_data = []
+    num_modules_data = []
+    for student in student_hours:
+        time_data.append(student_hours[student])
+    for student in student_modules:
+        num_modules_data.append(student_modules[student])
+    time_data = np.sort(time_data)
+    string_time_data = [str(x) for x in time_data]
+    # time_data_2 = [x for x in time_data if x >= 15]
+    num_modules_data = np.sort(num_modules_data)
+    string_num_modules_data = [str(x) for x in num_modules_data]
+    # num_modules_data_2 = [x for x in num_modules_data if x >= 10]
+    fig, axs = plt.subplots(2)
+    axs[0].hist(time_data, bins=7)
+    axs[0].set_title("Time")
+    axs[1].hist(num_modules_data, bins=16)
+    axs[1].set_title("Modules")
+    # plt.subplots_adjust(
+    #     left=None, bottom=None, right=None, top=None, wspace=None, hspace=0.3
+    # )
+    # plt.show()
+    plt.savefig("histograms.png")
+    with open("Bootcamp_Summary.txt", "w") as out:
+        num_students = len(student_modules)
+        num_inactive = len(zero_modules_completed)
+        total_hours = sum(time_data)
+        out.write(f"Total Participants: {num_students + num_inactive}\n")
+        out.write(f"Participants with 0 modules completed: {num_inactive}\n")
+        out.write(f"Actual Participants: {num_students}\n")
+        out.write(f"Total Hours Spent: {total_hours}\n")
+        out.write(f"Time Per Student: {total_hours/num_students}\n\n")
+        out.write(f"Full Time Data: {', '.join(string_time_data)}\n")
+        out.write(f"Full Modules Data: {', '.join(string_num_modules_data)}\n")
 
 
 # main()
@@ -119,6 +196,7 @@ if args.file:
     fix_file(args.file)
     data = pd.read_csv("temp.txt")
     get_module_info(args.file, data)
+    os.remove(temptxt_path)
 elif args.modulesdirectory:
     if not os.path.isdir(moduleSummaries_dir_path):
         os.mkdir(moduleSummaries_dir_path)
@@ -139,6 +217,20 @@ elif args.participantsdirectory:
         fix_file(file_name)
         data = pd.read_csv(temptxt_path)
         get_student_info(file_name, data)
+    os.remove(temptxt_path)
     create_student_summaries()
+elif args.summary:
+    data_dir_path = os.path.join(ran_in_path, args.summary)
+    student_modules = {}
+    student_hours = {}
+    for file_name in os.listdir(data_dir_path):
+        os.chdir(data_dir_path)
+        fix_file(file_name)
+        data = pd.read_csv(temptxt_path)
+        get_student_info(file_name, data)
+    os.remove(temptxt_path)
+    zero_modules_completed = []
+    student_modules,student_hours = remove_nonparticipants(student_modules, student_hours)
+    create_full_summary()
 else:
     print("No options were selected, use -h option for help")
