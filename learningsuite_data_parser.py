@@ -7,21 +7,18 @@ import matplotlib.pyplot as plt
 # parse arguments
 parser = argparse.ArgumentParser()
 parser.add_argument(
-    "-md",
-    "--modulesdirectory",
-    help="collects the module data for all files in directory",
+    "-m",
+    "--modules",
+    help="creates summaries for each module, include directory of csv files as argument",
 )
 parser.add_argument("-f", "--file", help="collects the module data for a single file")
 parser.add_argument(
-    "-pd",
-    "--participantsdirectory",
-    help="collects the data for each participant from a directory",
+    "-p",
+    "--participants",
+    help="creates summaries for each student, include directory of csv files as argument",
 )
 parser.add_argument(
     "-s", "--summary", help="creates a summary for bootcamp participation"
-)
-parser.add_argument(
-    "-v", "--verbose", action="store_true", help="print logging messages"
 )
 args = parser.parse_args()
 
@@ -137,11 +134,37 @@ def remove_nonparticipants(modules, hours):
     return new_modules, new_hours
 
 
+def get_module_summary_info():
+    if file_name[0:38] == "Student Answers for Computing Bootcamp":
+        module_name = file_name[39:-4].replace(" ", "")
+    elif file_name[-11:] == "_Module.csv":
+        module_name = file_name[:-11]
+    else:
+        module_name = file_name[:-4]
+    float_hours = []
+    num_participants = 0
+    for value in data.iloc[:, 7]:
+        if not pd.isnull(value):
+            float_hours.insert(0, value)
+    student_list = data.iloc[:, 0]
+    i = 0
+    for student in student_list:
+        student_data = data.iloc[i, :]
+        if student_data[6] == "A":
+            num_participants = num_participants + 1
+        i = i + 1
+    module_participants[module_name] = num_participants
+    module_hours[module_name] = sum(float_hours)
+
+
 # create file and histograms that give overall sumamry of data
 def create_full_summary():
     os.chdir(bootcampSummary_dir_path)
     time_data = []
     num_modules_data = []
+    modules_list = list(module_participants.keys())
+    modules_hours_list = list(module_hours.values())
+    module_participants_list = list(module_participants.values())
     for student in student_hours:
         time_data.append(student_hours[student])
     for student in student_modules:
@@ -159,6 +182,22 @@ def create_full_summary():
         left=None, bottom=None, right=None, top=None, wspace=None, hspace=0.3
     )
     plt.savefig("histograms.png")
+    plt.close()
+    font = {"size": 6}
+    plt.rc("font", **font)
+    plt.subplot(211)
+    plt.bar(modules_list, module_participants_list)
+    plt.title("Participants By Module")
+    plt.xticks(rotation=40, ha="right")
+    plt.subplot(212)
+    plt.bar(modules_list, modules_hours_list)
+    plt.title("Time Spent By Module")
+    plt.xticks(rotation=30, ha="right")
+    plt.subplots_adjust(
+        left=None, bottom=0.2, right=None, top=None, wspace=None, hspace=0.8
+    )
+    plt.savefig("barGraphs.png")
+
     max_time = max(time_data)
     min_time = min(time_data)
     for student in student_hours:
@@ -196,19 +235,19 @@ if args.file:
     data = pd.read_csv("temp.txt")
     get_module_info(args.file, data)
     os.remove(temptxt_path)
-elif args.modulesdirectory:
+elif args.modules:
     if not os.path.isdir(moduleSummaries_dir_path):
         os.mkdir(moduleSummaries_dir_path)
-    data_dir_path = os.path.join(ran_in_path, args.modulesdirectory)
+    data_dir_path = os.path.join(ran_in_path, args.modules)
     for file_name in os.listdir(data_dir_path):
         os.chdir(data_dir_path)
         fix_file(file_name)
         data = pd.read_csv(temptxt_path)
         get_module_info(file_name, data)
-elif args.participantsdirectory:
+elif args.participants:
     if not os.path.isdir(participantSummaries_dir_path):
         os.mkdir(participantSummaries_dir_path)
-    data_dir_path = os.path.join(ran_in_path, args.participantsdirectory)
+    data_dir_path = os.path.join(ran_in_path, args.participants)
     student_modules = {}
     student_hours = {}
     for file_name in os.listdir(data_dir_path):
@@ -224,11 +263,14 @@ elif args.summary:
     data_dir_path = os.path.join(ran_in_path, args.summary)
     student_modules = {}
     student_hours = {}
+    module_participants = {}
+    module_hours = {}
     for file_name in os.listdir(data_dir_path):
         os.chdir(data_dir_path)
         fix_file(file_name)
         data = pd.read_csv(temptxt_path)
         get_student_info(file_name, data)
+        get_module_summary_info()
     os.remove(temptxt_path)
     zero_modules_completed = []
     student_modules, student_hours = remove_nonparticipants(
